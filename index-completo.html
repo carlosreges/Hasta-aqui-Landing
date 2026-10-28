@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hasta Aquí | Claridad y Propósito</title>
+  <meta name="description" content="Landing page minimalista y sofisticada para la marca Hasta Aquí.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-teal: #108286;
+      --color-teal-dark: #0d6a6e;
+      --color-mustard: #7a6200;
+      --color-bg: #FBEDEC;
+      --color-bg-white: #ffffff;
+      --color-bg-alt: #f4e3e1;
+      --color-text-dark: #1a1a1a;
+      --color-text-muted: #5a5a5a;
+      --color-text-light: #8a8a8a;
+      --color-border: rgba(16, 130, 134, 0.18);
+      --color-shadow: rgba(0, 0, 0, 0.06);
+      --color-shadow-md: rgba(0, 0, 0, 0.10);
+      --font-serif: 'Cormorant Garamond', serif;
+      --font-sans: 'Inter', sans-serif;
+      --transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --transition-fast: all 0.25s ease;
+      --max-width: 1200px;
+      --radius: 24px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text-dark);
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; transition: var(--transition-fast); }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; }
+    .bg-white { background-color: var(--color-bg-white); }
+    .bg-accent-light { background-color: var(--color-bg-alt); }
+    .text-center { text-align: center; }
+    .section-kicker {
+      display: inline-block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--color-teal);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 600;
+      line-height: 1.15;
+      color: var(--color-text-dark);
+      margin-bottom: 1rem;
+    }
+    .section-title .text-accent { color: var(--color-teal); }
+    .section-desc {
+      color: var(--color-text-muted);
+      font-size: 1.05rem;
+      max-width: 650px;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.9s ease-out;
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .fade-up { transform: translateY(40px); }
+    .delay-1 { transition-delay: 0.15s; }
+    .delay-2 { transition-delay: 0.3s; }
+    .delay-3 { transition-delay: 0.45s; }
+    .btn {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-primary {
+      background: var(--color-teal);
+      color: #ffffff;
+      border: 2px solid var(--color-teal);
+    }
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--color-teal);
+      transform: translateY(-3px);
+      box-shadow: 0 0 0 4px rgba(16, 130, 134, 0.18);
+    }
+    .btn-primary:active { transform: scale(0.96); }
+    .btn-outline {
+      background: transparent;
+      color: var(--color-text-dark);
+      border: 2px solid var(--color-text-muted);
+    }
+    .btn-outline:hover {
+      border-color: var(--color-teal);
+      color: var(--color-teal);
+      transform: translateY(-3px);
+    }
+    .btn-large { padding: 1.15rem 2.4rem; font-size: 1rem; }
+    /* NAVEGACIÓN */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(251, 237, 236, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(16, 130, 134, 0.12);
+      transition: var(--transition-fast);
+    }
+    .header.scrolled { box-shadow: 0 4px 20px -6px var(--color-shadow); }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1.5rem;
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--color-teal);
+      letter-spacing: -0.5px;
+      z-index: 101;
+    }
+    .nav-menu { display: none; }
+    .nav-list {
+      display: flex;
+      gap: 2.4rem;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .nav-list a {
+      color: var(--color-text-muted);
+      position: relative;
+    }
+    .nav-list a::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--color-teal);
+      transition: var(--transition-fast);
+    }
+    .nav-list a:hover { color: var(--color-teal); }
+    .nav-list a:hover::after { width: 100%; }
+    .nav-cta {
+      padding: 0.7rem 1.6rem;
+      font-size: 0.85rem;
+      border: 2px solid var(--color-teal);
+      color: #fff;
+      background: var(--color-teal);
+      margin-left: 0.5rem;
+    }
+    .nav-cta:hover { background: transparent; color: var(--color-teal); transform: translateY(-2px); }
+    .nav-toggle {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      z-index: 101;
+    }
+    .nav-toggle span {
+      width: 24px;
+      height: 2px;
+      background: var(--color-text-dark);
+      border-radius: 2px;
+      transition: var(--transition-fast);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 1.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(60% 60% at 50% 40%, rgba(16, 130, 134, 0.08), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-content { text-align: left; }
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--color-teal);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      padding: 0.7rem 1.6rem;
+      border: 1px solid var(--color-teal);
+      border-radius: 50px;
+    }
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 8vw, 5.2rem);
+      font-weight: 600;
+      line-height: 1.05;
+      color: var(--color-text-dark);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title .text-accent {
+      color: var(--color-teal);
+      position: relative;
+    }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--color-text-muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hero-circle {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle at 30% 30%, rgba(16, 130, 134, 0.12), transparent 70%);
+      border-radius: 50%;
+      position: absolute;
+      animation: float 8s ease-in-out infinite;
+    }
+    .hero-dot {
+      position: absolute;
+      background: var(--color-teal);
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+    .dot-1 { width: 14px; height: 14px; top: 20%; left: 20%; animation: pulse 4s infinite; }
+    .dot-2 { width: 10px; height: 10px; bottom: 25%; right: 15%; animation: pulse 5s infinite 1s; }
+    .dot-3 { width: 18px; height: 18px; top: 55%; right: 10%; animation: pulse 6s infinite 2s; }
+
+    /* FILOSOFÍA */
+    .filosofia { padding: 6rem 1.5rem; }
+    .filosofia-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .filosofia-text h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--color-text-dark);
+    }
+    .filosofia-text p {
+      color: var(--color-text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    .feature-list { display: flex; flex-direction: column; gap: 0.9rem; }
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+    }
+    .feature-list .check {
+      color: var(--color-teal);
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .image-frame {
+      position: relative;
+      border: 2px solid var(--color-teal);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 24px 48px -14px var(--color-shadow);
+    }
+    .image-placeholder {
+      width: 100%;
+      padding-top: 66%;
+      background: linear-gradient(135deg, #e8dcdb 0%, #d8c9c7 100%);
+      position: relative;
+      animation: float 10s ease-in-out infinite;
+    }
+    /* SERVICIOS */
+    .servicios { padding: 6rem 1.5rem; }
+    .servicios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .servicio-card {
+      background: var(--color-bg-white);
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .servicio-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-teal), var(--color-mustard));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: var(--transition);
+    }
+    .servicio-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(16, 130, 134, 0.35);
+      box-shadow: 0 24px 48px -12px var(--color-shadow-md);
+    }
+    .servicio-card:hover::before { transform: scaleX(1); }
+    .servicio-icon {
+      font-size: 2.4rem;
+      margin-bottom: 1.25rem;
+      display: inline-block;
+    }
+    .servicio-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      margin-bottom: 0.9rem;
+      color: var(--color-text-dark);
+    }
+    .servicio-card p {
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    .servicio-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--color-teal);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .servicio-link .arrow {
+      font-size: 0.8rem;
+      transition: var(--transition-fast);
+    }
+    .servicio-link:hover .arrow { transform: translateX(4px); }
+
+    /* ESTADÍSTICAS */
+    .stats { padding: 5rem 1.5rem; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      background: var(--color-bg-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      transition: var(--transition);
+    }
+    .stat-item:hover {
+      transform: translateY(-4px);
+      border-color: rgba(16, 130, 134, 0.25);
+    }
+    .stat-number {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--color-teal);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .stat-label {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* TESTIMONIOS */
+    .testimonios { padding: 6rem 1.5rem; }
+    .testimonio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .testimonio-card {
+      background: var(--color-bg-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: var(--transition);
+    }
+    .testimonio-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(16, 130, 134, 0.3);
+      box-shadow: 0 20px 40px -10px var(--color-shadow);
+    }
+    .quote-mark {
+      font-family: var(--font-serif);
+      font-size: 4rem;
+      color: var(--color-teal);
+      opacity: 0.2;
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      line-height: 1;
+    }
+    .testimonio-card p {
+      font-size: 1.05rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+    .testimonio-author {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .testimonio-author strong {
+      font-family: var(--font-serif);
+      color: var(--color-text-dark);
+      font-size: 1.05rem;
+    }
+    .testimonio-author span {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+
+    /* CONTACTO */
+    .contacto { padding: 6rem 1.5rem; }
+    .contacto-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .contacto-info h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 1rem;
+      color: var(--color-text-dark);
+    }
+    .contacto-desc {
+      color: var(--color-text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 1.75rem;
+      line-height: 1.8;
+    }
+    .contacto-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contacto-details li {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+    }
+    .contacto-details .icon {
+      color: var(--color-teal);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .form-card {
+      background: var(--color-bg-white);
+      border: 2px solid var(--color-teal);
+      border-radius: var(--radius);
+      padding: 3.5rem 2.5rem;
+      box-shadow: 0 24px 48px -14px var(--color-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    #embedded-form-container { min-height: 380px; position: relative; }
+    .form-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      color: var(--color-text-muted);
+      gap: 1rem;
+    }
+    .form-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .form-placeholder h3 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--color-teal);
+      margin-bottom: 0.5rem;
+    }
+    .form-placeholder p { font-size: 0.95rem; max-width: 380px; }
+    .form-note {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      text-align: center;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 4rem 1.5rem 2.5rem;
+      border-top: 1px solid rgba(16, 130, 134, 0.12);
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2.5rem;
+      align-items: start;
+    }
+    .footer-brand .footer-logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--color-teal);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    .footer-brand p {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .footer-links h4 {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: var(--color-text-dark);
+      margin-bottom: 1rem;
+    }
+    .footer-links ul { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      transition: var(--transition-fast);
+    }
+    .footer-links a:hover { color: var(--color-teal); padding-left: 4px; }
+    .footer-legal p { margin-bottom: 1rem; color: var(--color-text-muted); }
+    .socials { display: flex; gap: 1rem; }
+    .socials a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--color-bg-white);
+      border: 1px solid var(--color-border);
+      border-radius: 50%;
+      color: var(--color-text-dark);
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    .socials a:hover {
+      background: var(--color-teal);
+      color: #fff;
+      transform: translateY(-3px);
+      border-color: var(--color-teal);
+    }
+
+    /* KEYFRAMES */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(1.2); }
+    }
+
+    /* RESPONSIVIDAD */
+    @media (min-width: 768px) {
+      .nav-menu { display: block; }
+      .nav-toggle { display: none; }
+      .hero-container { grid-template-columns: 1fr 1fr; }
+      .hero-content { text-align: left; }
+      .hero-actions { justify-content: flex-start; }
+    }
+    @media (max-width: 768px) {
+      .nav-toggle { display: flex; }
+      .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(251, 237, 236, 0.98);
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1rem;
+        border-bottom: 1px solid rgba(16, 130, 134, 0.1);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+        display: none;
+      }
+      .nav-menu.active { display: flex; }
+      .nav-list {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      .nav-cta { margin-left: 0; width: fit-content; }
+      .hero {
+        min-height: 80vh;
+        text-align: center;
+      }
+      .hero-container {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .hero-content { text-align: center; }
+      .hero-actions { justify-content: center; }
+      .hero-circle { width: 280px; height: 280px; }
+      .filosofia-grid, .contacto-wrapper { grid-template-columns: 1fr; gap: 3rem; }
+      .image-frame { max-width: 300px; margin: 0 auto; }
+    }
+    @media (max-width: 480px) {
+      .hero-title { font-size: clamp(2rem, 9vw, 3.6rem); }
+      .btn-large { width: 100%; text-align: center; padding: 1rem 1.5rem; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .stat-number { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <header class="header" id="header">
+    <div class="container nav-container">
+      <a href="#" class="nav-logo">Hasta Aquí</a>
+      <nav class="nav-menu">
+        <ul class="nav-list">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#filosofia">Filosofía</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#testimonios">Testimonios</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        <a href="#contacto" class="btn btn-primary nav-cta">Registrarme</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="container hero-container">
+      <div class="hero-content reveal fade-up">
+        <span class="hero-badge">Bienvenido a Hasta Aquí</span>
+        <h1 class="hero-title">
+          Pero sí cambia tu<span class="text-accent"> claridad</span>!!
+        </h1>
+        <p class="hero-subtitle">
+          Un espacio minimalista diseñado para recuperar el orden mental, la calma y la dirección que mereces.
+        </p>
+        <div class="hero-actions">
+          <a href="#contacto" class="btn btn-primary btn-large">Registrarme ahora</a>
+          <a href="#filosofia" class="btn btn-outline btn-large">Conoce nuestra filosofía</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal fade-up delay-2">
+        <div class="hero-circle"></div>
+        <div class="hero-dot dot-1"></div>
+        <div class="hero-dot dot-2"></div>
+        <div class="hero-dot dot-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILOSOFÍA -->
+  <section class="filosofia bg-white" id="filosofia">
+    <div class="container">
+      <div class="section-header reveal fade-up">
+        <span class="section-kicker">Nuestra esencia</span>
+        <h2 class="section-title">Más que un método,<span class="text-accent"> una pausa consciente</span></h2>
+        <p class="section-desc">
+          Creemos en el silencio entre las ideas, en el espacio entre los objetos y en la claridad que surge cuando dejamos de apresurarnos.
+        </p>
+      </div>
+      <div class="filosofia-grid reveal fade-up delay-1">
+        <div class="filosofia-text">
+          <h3>Menos ruido, más sentido</h3>
+          <p>
+            Cada elemento de esta experiencia ha sido elegido con intención. No hay relleno, solo lo esencial para que puedas respirar y decidir con calma.
+          </p>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> Espacios que respiran</li>
+            <li><span class="check">✓</span> Tipografía editorial y serena</li>
+            <li><span class="check">✓</span> Colores que transmiten calidez</li>
+          </ul>
+        </div>
+        <div class="filosofia-image">
+          <div class="image-frame">
+            <div class="image-placeholder"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="servicios" id="servicios">
+    <div class="container">
+      <div class="section-header reveal fade-up text-center">
+        <span class="section-kicker">Lo que ofrecemos</span>
+        <h2 class="section-title">Tres caminos hacia tu<span class="text-accent"> claridad</span></h2>
+      </div>
+      <div class="servicios-grid">
+        <article class="servicio-card reveal fade-up delay-1">
+          <div class="servicio-icon">🌀</div>
+          <h3>Claridad mental</h3>
+          <p>Elimina lo innecesario y enfócate en lo que realmente importa para avanzar con propósito.</p>
+          <a href="#" class="servicio-link">Descubrir más <span class="arrow">→</span></a>
+        </article>
+        <article class="servicio-card reveal fade-up delay-2">
+          <div class="servicio-icon">🌿</div>
+          <h3>Diseño consciente</h3>
+          <p>Espacios visuales limpios que transmiten calma, sofisticación y calidez en cada detalle.</p>
+          <a href="#" class="servicio-link">Descubrir más <span class="arrow">→</span></a>
+        </article>
+        <article class="servicio-card reveal fade-up delay-3">
+          <div class="servicio-icon">✦</div>
+          <h3>Acompañamiento</h3>
+          <p>Un camino guiado paso a paso para transformar tu claridad en acción concreta.</p>
+          <a href="#" class="servicio-link">Descubrir más <span class="arrow">→</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+  <!-- ESTADÍSTICAS -->
+  <section class="stats bg-accent-light" id="stats">
+    <div class="container stats-grid">
+      <div class="stat-item reveal fade-up delay-1">
+        <span class="stat-number" data-target="5">0</span>
+        <span class="stat-label">años de experiencia</span>
+      </div>
+      <div class="stat-item reveal fade-up delay-2">
+        <span class="stat-number" data-target="120">0</span>
+        <span class="stat-label">personas acompañadas</span>
+      </div>
+      <div class="stat-item reveal fade-up delay-3">
+        <span class="stat-number" data-target="100">0</span>
+        <span class="stat-label">porcentaje de satisfacción</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="testimonios bg-white" id="testimonios">
+    <div class="container">
+      <div class="section-header reveal fade-up text-center">
+        <span class="section-kicker">Voces</span>
+        <h2 class="section-title">Lo que dicen quienes<span class="text-accent"> ya pasaron por aquí</span></h2>
+      </div>
+      <div class="testimonio-grid">
+        <blockquote class="testimonio-card reveal fade-up delay-1">
+          <span class="quote-mark">“</span>
+          <p>
+            Una experiencia que devuelve el aire a los pulmones. Cada detalle está pensado para calmar la mente.
+          </p>
+          <footer class="testimonio-author">
+            <strong>María López</strong>
+            <span>Diseñadora</span>
+          </footer>
+        </blockquote>
+        <blockquote class="testimonio-card reveal fade-up delay-2">
+          <span class="quote-mark">“</span>
+          <p>
+            Minimalista sin ser fría. Siento que por fin encontré un espacio que entiende mi ritmo.
+          </p>
+          <footer class="testimonio-author">
+            <strong>Carlos Méndez</strong>
+            <span>Arquitecto</span>
+          </footer>
+        </blockquote>
+        <blockquote class="testimonio-card reveal fade-up delay-3">
+          <span class="quote-mark">“</span>
+          <p>
+            La claridad no se grita, se susurra. Hasta Aquí lo entiende perfectamente.
+          </p>
+          <footer class="testimonio-author">
+            <strong>Lucía Fernández</strong>
+            <span>Escritora</span>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contacto" id="contacto">
+    <div class="container contacto-wrapper">
+      <div class="contacto-info reveal fade-up">
+        <h2 class="contacto-title">¿Listo para comenzar?</h2>
+        <p class="contacto-desc">
+          Déjanos tus datos y te escribiremos personalmente para guiarte en el siguiente paso.
+        </p>
+        <ul class="contacto-details">
+          <li><span class="icon">✉</span> hola@hastaaqui.com</li>
+          <li><span class="icon">☎</span> +52 55 0000 0000</li>
+          <li><span class="icon">📍</span> Ciudad de México, México</li>
+        </ul>
+      </div>
+      <div class="contacto-form-wrap reveal fade-up delay-1">
+        <div class="form-card">
+          <div id="embedded-form-container">
+            <div class="form-placeholder">
+              <span class="form-icon">📄</span>
+              <h3>Tu formulario embebido va aquí</h3>
+              <p>Inserta tu <code>&lt;iframe&gt;</code> o código HTML de Typeform, Google Forms, etc.</p>
+            </div>
+          </div>
+          <p class="form-note">
+            Tus datos están protegidos. Esta página utiliza una conexión segura y respetuosa con tu privacidad.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">Hasta Aquí</span>
+        <p>Diseñado con intención, minimalismo y calidez.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Sitio</h4>
+        <ul>
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#filosofia">Filosofía</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#testimonios">Testimonios</a></li>
+        </ul>
+      </div>
+      <div class="footer-legal">
+        <p>&copy; 2026 Hasta Aquí. Todos los derechos reservados.</p>
+        <div class="socials">
+          <a href="#"><span>IG</span></a>
+          <a href="#"><span>TW</span></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observerOptions = { threshold: 0.12, rootMargin: '0px 0px -80px 0px' };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+      const statNumbers = document.querySelectorAll('.stat-number');
+      const countObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = +el.getAttribute('data-target');
+            const duration = 1500;
+            const increment = target / (duration / 16);
+            let current = 0;
+            const timer = setInterval(() => {
+              current += increment;
+              if (current >= target) {
+                el.textContent = target;
+                clearInterval(timer);
+              } else {
+                el.textContent = Math.floor(current);
+              }
+            }, 16);
+            countObserver.unobserve(el);
+          }
+        });
+      }, { threshold: 0.5 });
+      statNumbers.forEach((el) => countObserver.observe(el));
+
+      const header = document.getElementById('header');
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      const toggle = document.querySelector('.nav-toggle');
+      const menu = document.querySelector('.nav-menu');
+      if (toggle && menu) {
+        toggle.addEventListener('click', () => {
+          const isOpen = menu.classList.toggle('active');
+          toggle.setAttribute('aria-expanded', isOpen);
+        });
+        document.querySelectorAll('.nav-list a, .nav-cta').forEach((link) => {
+          link.addEventListener('click', () => {
+            menu.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      document.querySelectorAll('.btn').forEach((btn) => {
+        btn.addEventListener('mousedown', () => { btn.style.transform = 'scale(0.96)'; });
+        btn.addEventListener('mouseup', () => { btn.style.transform = ''; });
+        btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+      });
+    });
+  </script>
+</body>
+</html>
