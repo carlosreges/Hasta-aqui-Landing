@@ -3,7 +3,6 @@
 Landing page sofisticada, limpia y con animaciones suaves diseñada para la marca **"Hasta Aquí"**. Transmite claridad, calma y propósito a través de un diseño editorial minimalista con espacios en blanco generosos y una paleta de colores cálida y equilibrada.
 
 ![Vista previa de la landing page](./src/assets/img/landing-preview.png)
-*Reemplaza esta imagen con una captura real de tu página.*
 
 ---
 
